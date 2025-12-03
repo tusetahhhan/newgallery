@@ -667,141 +667,6 @@ header {
     margin: 30px 0;
 }
 
-/* Flat Gallery Wall View */
-.perspective-gallery {
-    padding: 80px 40px;
-    background: linear-gradient(to bottom, #f5f5f5 0%, #e8e8e8 100%);
-    min-height: 100vh;
-}
-
-.perspective-room {
-    position: relative;
-    max-width: 1400px;
-    margin: 0 auto;
-    background: #ffffff;
-    padding: 60px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.perspective-wall {
-    display: none;
-}
-
-.perspective-floor {
-    display: none;
-}
-
-/* Main gallery grid */
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.perspective-slot {
-    position: relative;
-    aspect-ratio: 4/5;
-    pointer-events: auto;
-}
-
-.perspective-artwork {
-    width: 100%;
-    height: 100%;
-    border: 12px solid #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    background: #fff;
-    overflow: hidden;
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.perspective-artwork:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    z-index: 10;
-}
-
-.perspective-artwork img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.gallery-artwork-checkbox {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    width: 28px;
-    height: 28px;
-    cursor: pointer;
-    z-index: 20;
-    appearance: none;
-    border: 2px solid #fff;
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 4px;
-    transition: all 0.2s;
-    pointer-events: auto;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.gallery-artwork-checkbox:hover {
-    background: rgba(0, 0, 0, 0.8);
-    transform: scale(1.1);
-}
-
-.gallery-artwork-checkbox:checked {
-    background: #000;
-    border-color: #fff;
-}
-
-.gallery-artwork-checkbox:checked::after {
-    content: '✓';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #fff;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.perspective-empty-slot {
-    width: 100%;
-    height: 100%;
-    border: 3px dashed #ccc;
-    background: #fafafa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    pointer-events: auto;
-}
-
-.perspective-empty-slot:hover {
-    border-color: #000;
-    background: #f0f0f0;
-    transform: translateY(-2px);
-}
-
-.perspective-empty-slot .plus-icon {
-    font-size: 48px;
-    color: #ccc;
-    font-weight: 300;
-    transition: all 0.2s ease;
-    user-select: none;
-    pointer-events: none;
-}
-
-.perspective-empty-slot:hover .plus-icon {
-    color: #000;
-    transform: scale(1.1);
-}
-
 /* Art Market Modal */
 .art-market-overlay {
     position: fixed;
@@ -999,4 +864,194 @@ header {
     .new-analysis-button {
         width: 100%;
     }
+}
+
+/* IMMERSIVE GALLERY STYLES */
+
+.immersive-gallery-container {
+    position: relative;
+    width: 100%;
+    height: 85vh; /* Takes up most of the screen */
+    background: #000;
+    overflow: hidden;
+    margin-top: -40px; /* Pull up closer to header if needed */
+}
+
+.gallery-room-view {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    perspective: 2000px; /* Essential for the 3D transforms */
+}
+
+.room-background {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    opacity: 0.9; /* Slight dim to make art pop */
+}
+
+/* The invisible container for each artwork on the wall */
+.gallery-slot-container {
+    position: absolute;
+    /* Styles like top, left, width, height come from inline styles in JS */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Shadow behind the frame */
+    background: #e0e0e0; /* Placeholder color */
+    transition: transform 0.5s ease;
+}
+
+.gallery-slot-container:hover {
+    z-index: 100;
+    filter: brightness(1.1);
+}
+
+/* The actual content (Image or Empty State) */
+.gallery-wall-content {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    cursor: pointer;
+    background: #fff;
+    border: 4px solid #fff; /* White matte/frame */
+}
+
+.gallery-wall-content img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-wall-content.selected {
+    border-color: #000;
+    box-shadow: 0 0 0 4px #ffff00; /* Highlight selection */
+}
+
+/* Empty State (+) */
+.gallery-wall-empty {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px dashed rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.gallery-wall-empty:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: #fff;
+}
+
+.gallery-wall-empty .plus-icon {
+    font-size: 32px;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* Selection Checkbox for Auction */
+.gallery-checkbox {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.gallery-wall-content:hover .gallery-checkbox,
+.gallery-checkbox.checked {
+    opacity: 1;
+}
+
+/* Hover Label */
+.gallery-wall-label {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    padding: 4px 10px;
+    font-size: 10px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.gallery-wall-content:hover .gallery-wall-label {
+    opacity: 1;
+}
+
+/* Navigation UI */
+.gallery-nav-overlay {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px 30px;
+    border-radius: 40px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.gallery-nav-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #000;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.gallery-nav-btn:hover {
+    background: #f0f0f0;
+}
+
+.room-indicator {
+    text-align: center;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.dots {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 5px;
+    font-size: 20px;
+    line-height: 10px;
+    color: #ccc;
+}
+
+.dots span.active {
+    color: #000;
 }
